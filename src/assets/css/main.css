@@ -390,6 +390,12 @@ a:hover { color: var(--ink); }
 .sponsor-offer__list { font-size: 0.95rem; }
 .sponsor-cta { margin: 1.5rem 0 0; }
 .opportunities-fine { font-size: 0.82rem; color: var(--monsoon); max-width: 62ch; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--ink); }
+
+.opportunity-card { border: var(--rule); border-left: 8px solid var(--mango); padding: 1.1rem 1.4rem; margin: 1.5rem 0; max-width: 62ch; }
+.opportunity-card__k { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; color: var(--monsoon); margin-bottom: 0.3rem; }
+.opportunity-card__name { font-family: var(--font-display); font-stretch: 125%; font-weight: 860; font-size: 1.4rem; margin: 0 0 0.4rem; }
+.opportunity-card__desc { margin: 0 0 0.6rem; }
+.opportunity-card__note { font-size: 0.85rem; color: var(--monsoon); margin: 0; border-left: 4px solid var(--tide); padding-left: 0.7rem; }
 .btn {
   display: inline-block; font-family: var(--font-mono); font-weight: 700;
   font-size: 0.95rem; letter-spacing: 0.04em; text-decoration: none;
