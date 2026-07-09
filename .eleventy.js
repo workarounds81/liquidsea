@@ -167,6 +167,10 @@ module.exports = function (eleventyConfig) {
   );
 
   return {
+    // GITHUB_PAGES_PROJECT_URL=1 builds for the free workarounds81.github.io/liquidsea/
+    // address (no custom domain yet). Once liquidsea.net DNS is live, build without it
+    // so every internal link is root-relative again — see DEPLOY.md.
+    pathPrefix: process.env.GITHUB_PAGES_PROJECT_URL ? "/liquidsea/" : "/",
     dir: {
       input: "src",
       output: "_site",

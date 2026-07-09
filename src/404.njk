@@ -9,6 +9,6 @@ eleventyExcludeFromCollections: true
 <section class="container thanks-page">
   <p class="kicker">404 — NO SOUNDING</p>
   <h1 class="display">Nothing at this depth.</h1>
-  <p class="archive__sub">The page you wanted isn't here. Try the <a href="/digest/">digest archive</a>, the <a href="/events/">events calendar</a>, or head <a href="/">back to the surface</a>.</p>
+  <p class="archive__sub">The page you wanted isn't here. Try the <a href="{{ '/digest/' | url }}">digest archive</a>, the <a href="{{ '/events/' | url }}">events calendar</a>, or head <a href="{{ '/' | url }}">back to the surface</a>.</p>
   <div class="strip">{% sounding "404-lost-at-sea", 100, 48 %}</div>
 </section>

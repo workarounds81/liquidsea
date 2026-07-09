@@ -31,7 +31,7 @@ permalink: /
   {% for deal in latestDeals | topDeals(3) %}
     {{ ui.dealRow(deal) }}
   {% endfor %}
-  <p class="more-link"><a href="{{ latestPost.url }}">Read the full issue →</a></p>
+  <p class="more-link"><a href="{{ latestPost.url | url }}">Read the full issue →</a></p>
 </section>
 
 <div class="container">
@@ -41,7 +41,7 @@ permalink: /
 <section class="container home-events" aria-labelledby="events-heading">
   <h2 id="events-heading" class="section-head"><span class="section-head__k">RADAR</span> Next on the calendar</h2>
   {% for event in nextEvents %}{% if loop.index <= 5 %}{{ ui.eventRow(event) }}{% endif %}{% endfor %}
-  <p class="more-link"><a href="/events/">Full events calendar →</a></p>
+  <p class="more-link"><a href="{{ '/events/' | url }}">Full events calendar →</a></p>
 </section>
 
 {% include "partials/subscribe.njk" %}

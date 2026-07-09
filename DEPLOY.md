@@ -14,6 +14,16 @@ own). You only need to do the steps below **once**.
    `https://<your-username>.github.io/<repo>/` first, and at the custom domain
    after step 2 below.
 
+## 1.5 Switch off the free-preview link prefix once you buy the domain
+
+Right now `.github/workflows/deploy.yml` builds with `GITHUB_PAGES_PROJECT_URL: "1"`,
+which makes every internal link start with `/liquidsea/` so the free
+`workarounds81.github.io/liquidsea/` address works correctly while you're still
+deciding on a domain. **Once you've bought liquidsea.net and completed step 2
+below**, delete that `env:` block (the two lines under `- run: npm run build`)
+in `.github/workflows/deploy.yml` and push — this switches every link back to
+plain root paths, which is what the custom domain needs.
+
 ## 2. Point liquidsea.net at GitHub Pages
 
 In the same **Settings → Pages** screen, enter `liquidsea.net` under

@@ -4,15 +4,15 @@
 {% set nextEvent = events | upcomingEvents(build.now) | first %}
 <header class="masthead">
   <div class="masthead__inner container">
-    <a class="masthead__logo" href="/" aria-label="{{ site.name }} — home">
+    <a class="masthead__logo" href="{{ '/' | url }}" aria-label="{{ site.name }} — home">
       <svg class="masthead__mark" aria-hidden="true" focusable="false" viewBox="0 0 32 32" width="34" height="34"><rect width="32" height="32" fill="#0C1F23"/><rect x="1" y="3" width="30" height="2.5" fill="#EFF5F0"/><rect x="5" y="5.5" width="5" height="13" fill="#0E7C66"/><rect x="13.5" y="5.5" width="5" height="21" fill="#FFB320"/><rect x="22" y="5.5" width="5" height="9" fill="#FF4B33"/></svg>
       <span class="masthead__wordmark">LIQUID<span class="masthead__wordmark-alt">SEA</span></span>
     </a>
     <nav class="masthead__nav" aria-label="Primary">
-      <a href="/digest/">Digest</a>
-      <a href="/events/">Events</a>
-      <a href="/sponsor/">Sponsor</a>
-      <a href="/about/">About</a>
+      <a href="{{ '/digest/' | url }}">Digest</a>
+      <a href="{{ '/events/' | url }}">Events</a>
+      <a href="{{ '/sponsor/' | url }}">Sponsor</a>
+      <a href="{{ '/about/' | url }}">About</a>
     </nav>
   </div>
   {% if latestPost %}

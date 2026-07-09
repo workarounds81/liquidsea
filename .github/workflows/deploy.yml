@@ -29,7 +29,13 @@ jobs:
           cache: npm
       - run: npm ci
       # Validation gate: bad data (including from automated PRs) fails the build.
+      # GITHUB_PAGES_PROJECT_URL=1: no custom domain is live yet, so every internal
+      # link gets a "/liquidsea/" prefix to work at workarounds81.github.io/liquidsea/.
+      # Once liquidsea.net DNS is confirmed working (see DEPLOY.md), delete this
+      # env var (or set it to empty) so links go back to plain root-relative paths.
       - run: npm run build
+        env:
+          GITHUB_PAGES_PROJECT_URL: "1"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

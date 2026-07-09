@@ -36,8 +36,8 @@ layout: layouts/base.njk
     {% endif %}
 
     <nav class="issue__pager" aria-label="Issue navigation">
-      <a href="/digest/">← All issues</a>
-      <a href="/digest/feed.xml">Subscribe via RSS</a>
+      <a href="{{ '/digest/' | url }}">← All issues</a>
+      <a href="{{ '/digest/feed.xml' | url }}">Subscribe via RSS</a>
     </nav>
   </div>
 </article>
