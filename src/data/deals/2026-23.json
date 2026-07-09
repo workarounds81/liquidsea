@@ -1,0 +1,18 @@
+{
+  "issue": "2026-23",
+  "deals": [
+    {
+      "project_name": "FLOQ",
+      "one_line_description": "Indonesian digital-asset platform offering trading, education and stablecoin infrastructure.",
+      "category": "Other",
+      "country_or_region": "Indonesia",
+      "round_type": "Strategic",
+      "amount_usd": 11300000,
+      "lead_investors": [],
+      "other_investors": ["Ascent", "Sharpbyte", "HFX Group", "MD Capital"],
+      "announced_date": "2026-06-03",
+      "source_url": "https://www.dealstreetasia.com/stories/floq-raises-fresh-funding-484255",
+      "editorial_note": "Ex-Tokocrypto CEO Yudhono Rawis's first outside raise for FLOQ — modest next to the region's headline rounds, but a bet on digital-asset infrastructure over pure trading volume."
+    }
+  ]
+}
