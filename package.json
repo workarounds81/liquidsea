@@ -1,0 +1,18 @@
+{
+  "name": "liquidsea",
+  "version": "1.0.0",
+  "private": true,
+  "description": "LiquidSea — curated SEA Web3 deal-flow digest & events calendar",
+  "scripts": {
+    "start": "eleventy --serve",
+    "validate": "node scripts/validate-data.js",
+    "build:site": "eleventy",
+    "build:og": "node scripts/generate-og.js",
+    "build": "npm run validate && npm run build:site && npm run build:og"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
+    "@resvg/resvg-js": "^2.6.2",
+    "satori": "^0.12.0"
+  }
+}

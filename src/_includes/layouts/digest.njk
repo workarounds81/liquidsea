@@ -1,0 +1,44 @@
+---
+layout: layouts/base.njk
+---
+{% import "partials/macros.njk" as ui %}
+<article class="issue">
+  <header class="issue__header container">
+    <p class="kicker">WEEKLY DIGEST · ISSUE {{ issue | weekLabel }} · {{ date | niceDate | upper }}</p>
+    <h1 class="display issue__title">{{ title }}</h1>
+    <p class="issue__stats">{{ issueDeals | length }} DEALS · {{ issueDeals | totalUsd | usd }} DISCLOSED · MKTS {{ issueDeals | countryList }}</p>
+  </header>
+  <div class="strip strip--issue">{% issueSounding issue, issueDeals, 150 %}</div>
+
+  <div class="container issue__body">
+    <div class="prose issue__intro">
+      {{ content | safe }}
+    </div>
+
+    <section class="issue__deals" aria-labelledby="deals-heading">
+      <h2 id="deals-heading" class="section-head"><span class="section-head__k">THE TAPE</span> This week's deals</h2>
+      {% for deal in issueDeals %}
+        {{ ui.dealRow(deal) }}
+      {% endfor %}
+    </section>
+
+    {% include "partials/sponsor-slot.njk" %}
+
+    {% if hiring %}
+    <section class="issue__hiring" aria-labelledby="hiring-heading">
+      <h2 id="hiring-heading" class="section-head"><span class="section-head__k">WHO'S HIRING</span> Roles at this week's companies</h2>
+      <ul class="hiring">
+        {% for job in hiring %}
+        <li class="hiring__row"><a href="{{ job.url }}" rel="noopener">{{ job.role }}</a> <span class="hiring__co">— {{ job.company }}</span></li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <nav class="issue__pager" aria-label="Issue navigation">
+      <a href="/digest/">← All issues</a>
+      <a href="/digest/feed.xml">Subscribe via RSS</a>
+    </nav>
+  </div>
+</article>
+{% jsonldArticle site.url, site.name, page.url, title, summary, date, issue %}

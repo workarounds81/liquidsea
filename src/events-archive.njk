@@ -1,0 +1,23 @@
+---
+layout: layouts/base.njk
+permalink: /events/archive/
+title: "Events archive"
+description: "Past Web3 events across Southeast Asia — the record of where the region gathered."
+---
+{% import "partials/macros.njk" as ui %}
+<section class="container" aria-labelledby="events-archive-heading">
+  <header class="archive__header">
+    <p class="kicker">ALREADY SAILED</p>
+    <h1 id="events-archive-heading" class="display">Events archive</h1>
+    <p class="archive__sub">Past gatherings, kept for the record. Back to the <a href="/events/">live calendar</a>.</p>
+  </header>
+
+  <div class="events-list events-list--past">
+    <h2 class="visually-hidden">Past events</h2>
+    {% for event in events | pastEvents(build.now) %}
+      {{ ui.eventRow(event) }}
+    {% else %}
+      <p class="events-empty">No past events yet.</p>
+    {% endfor %}
+  </div>
+</section>

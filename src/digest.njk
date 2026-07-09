@@ -1,0 +1,28 @@
+---
+layout: layouts/base.njk
+permalink: /digest/
+title: "Digest archive"
+description: "Every weekly issue of the LiquidSea SEA Web3 deal-flow digest, reverse chronological."
+---
+<section class="container archive" aria-labelledby="archive-heading">
+  <header class="archive__header">
+    <p class="kicker">THE BACK CATALOGUE</p>
+    <h1 id="archive-heading" class="display">Digest archive</h1>
+    <p class="archive__sub">Every issue, newest first. <a href="/digest/feed.xml">Subscribe via RSS</a> or <a href="/#subscribe-heading">get it by email</a>.</p>
+  </header>
+
+  {% for post in collections.digest %}
+  {% set postIssueData = deals[post.data.issue] %}
+  {% set postDeals = (postIssueData.deals or []) if postIssueData else [] %}
+  <article class="archive-row">
+    <a class="archive-row__link" href="{{ post.url }}">
+      <div class="archive-row__strip">{% issueSounding post.data.issue, postDeals, 64 %}</div>
+      <div class="archive-row__body">
+        <p class="archive-row__meta">ISSUE {{ post.data.issue | weekLabel }} · {{ post.data.date | niceDate | upper }}</p>
+        <h2 class="archive-row__title">{{ post.data.title }}</h2>
+        <p class="archive-row__stats">{{ postDeals | length }} DEALS · {{ postDeals | totalUsd | usd }} DISCLOSED · {{ postDeals | countryList }}</p>
+      </div>
+    </a>
+  </article>
+  {% endfor %}
+</section>

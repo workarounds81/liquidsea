@@ -1,0 +1,71 @@
+{
+  "issue": "2026-26",
+  "sample": true,
+  "deals": [
+    {
+      "project_name": "Merlion Yield",
+      "one_line_description": "Compliance-wrapped staking gateway for SEA private banks.",
+      "category": "DeFi",
+      "country_or_region": "Singapore",
+      "round_type": "Seed",
+      "amount_usd": 5500000,
+      "lead_investors": ["Straits Block Fund"],
+      "other_investors": ["Meridian Digital Assets"],
+      "announced_date": "2026-06-23",
+      "source_url": "https://example.com/sample/merlion-seed",
+      "editorial_note": "SAMPLE. Private-bank distribution is the only staking moat left in Singapore. Everyone else is competing on basis points."
+    },
+    {
+      "project_name": "Gajah Games",
+      "one_line_description": "Publisher bringing Indonesian casual titles onchain.",
+      "category": "Gaming",
+      "country_or_region": "Indonesia",
+      "round_type": "Series A",
+      "amount_usd": 12000000,
+      "lead_investors": ["Krakatoa Ventures"],
+      "other_investors": ["Bayanihan Games Fund", "Nusantara Angels"],
+      "announced_date": "2026-06-24",
+      "source_url": "https://example.com/sample/gajah-series-a",
+      "editorial_note": "SAMPLE. The quiet gaming comeback: publishers with existing distribution, not new studios chasing token launches."
+    },
+    {
+      "project_name": "Chao Ledger",
+      "one_line_description": "AI reconciliation layer for Thai exchange back-offices.",
+      "category": "AI",
+      "country_or_region": "Thailand",
+      "round_type": "Pre-seed",
+      "amount_usd": 900000,
+      "lead_investors": ["Lotus Digital"],
+      "other_investors": [],
+      "announced_date": "2026-06-22",
+      "source_url": "https://example.com/sample/chaoledger-preseed",
+      "editorial_note": "SAMPLE. Unsexy, regulated, sticky. The kind of pre-seed that becomes infrastructure nobody can rip out."
+    },
+    {
+      "project_name": "Pearl Router",
+      "one_line_description": "Cross-border stablecoin liquidity routing between PH and MY corridors.",
+      "category": "Payments",
+      "country_or_region": "Philippines",
+      "round_type": "Seed",
+      "amount_usd": 3800000,
+      "lead_investors": ["Harbour8"],
+      "other_investors": ["Selat Capital"],
+      "announced_date": "2026-06-25",
+      "source_url": "https://example.com/sample/pearlrouter-seed",
+      "editorial_note": "SAMPLE. Corridor-by-corridor is the right way to build remittance liquidity — boring on a map, lucrative per lane."
+    },
+    {
+      "project_name": "Borneo Compute",
+      "one_line_description": "Hydro-powered GPU and validator co-location in East Malaysia.",
+      "category": "Infra",
+      "country_or_region": "Malaysia",
+      "round_type": "Strategic",
+      "amount_usd": 20000000,
+      "lead_investors": ["Putra Digital"],
+      "other_investors": ["Chao Phraya Holdings"],
+      "announced_date": "2026-06-26",
+      "source_url": "https://example.com/sample/borneo-strategic",
+      "editorial_note": "SAMPLE. Cheap hydro plus crypto plus AI compute is Sarawak's whole pitch now, and the week's biggest line."
+    }
+  ]
+}

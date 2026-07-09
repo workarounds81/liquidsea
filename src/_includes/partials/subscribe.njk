@@ -1,0 +1,18 @@
+<section class="subscribe" aria-labelledby="subscribe-heading">
+  <div class="subscribe__inner">
+    <p class="kicker kicker--on-ink">EVERY FRIDAY</p>
+    <h2 id="subscribe-heading" class="subscribe__title">Get the digest before the market reads it.</h2>
+    <p class="subscribe__sub">One email a week. Every disclosed round in SEA Web3, called honestly.</p>
+    {# Web3Forms — paste your access key into src/data/site.json ("web3formsKey"). #}
+    <form class="subscribe__form" action="https://api.web3forms.com/submit" method="POST">
+      <input type="hidden" name="access_key" value="{{ site.web3formsKey }}">
+      <input type="hidden" name="subject" value="New LiquidSea subscriber">
+      <input type="hidden" name="from_name" value="LiquidSea">
+      <input type="hidden" name="redirect" value="{{ site.url }}/thanks/">
+      <input type="checkbox" name="botcheck" class="subscribe__botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <label class="visually-hidden" for="subscribe-email">Email address</label>
+      <input class="subscribe__input" id="subscribe-email" type="email" name="email" placeholder="you@fund.vc" required autocomplete="email">
+      <button class="subscribe__btn" type="submit">Subscribe</button>
+    </form>
+  </div>
+</section>

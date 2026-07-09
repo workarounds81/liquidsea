@@ -1,0 +1,36 @@
+{# Deal row — an instrument line, not a blog card. #}
+{% macro dealRow(deal) %}
+<article class="deal">
+  <div class="deal__line">
+    <span class="deal__cc" title="{{ deal.country_or_region }}">{{ deal.country_or_region | cc }}</span>
+    <h3 class="deal__name">{{ deal.project_name }}</h3>
+    <span class="chip chip--cat">{{ deal.category }}</span>
+    <span class="deal__round">{{ deal.round_type | upper }}</span>
+    <span class="deal__amt{% if deal.amount_usd === null %} deal__amt--na{% endif %}">{{ deal.amount_usd | usd }}</span>
+  </div>
+  <p class="deal__desc">{{ deal.one_line_description }}</p>
+  {% if deal.lead_investors.length or deal.other_investors.length %}
+  <p class="deal__inv">
+    {%- if deal.lead_investors.length %}LED · {{ deal.lead_investors | join(", ") | upper }}{% endif -%}
+    {%- if deal.other_investors.length %}{% if deal.lead_investors.length %} &nbsp;/&nbsp; {% endif %}W/ {{ deal.other_investors | join(", ") | upper }}{% endif -%}
+  </p>
+  {% endif %}
+  <p class="deal__note">{{ deal.editorial_note }}</p>
+  <p class="deal__meta"><time datetime="{{ deal.announced_date }}">{{ deal.announced_date | niceDate | upper }}</time> · <a href="{{ deal.source_url }}" rel="noopener">SOURCE&nbsp;↗</a></p>
+</article>
+{% endmacro %}
+
+{# Event row — filterable via data attributes, featured rows get heat. #}
+{% macro eventRow(event) %}
+<article class="event{% if event.is_featured %} event--featured{% endif %}" data-event data-country="{{ event.country }}" data-type="{{ event.type }}">
+  <div class="event__line">
+    <span class="event__cc" title="{{ event.country }}">{{ event.country | cc }}</span>
+    <h3 class="event__name"><a href="{{ event.url }}" rel="noopener">{{ event.event_name }}</a></h3>
+    {% if event.is_featured %}<span class="chip chip--featured">FEATURED</span>{% endif %}
+    <span class="chip chip--cat">{{ event.type }}</span>
+    <span class="event__date">{{ event.start_date | dateRange(event.end_date) | upper }}</span>
+  </div>
+  <p class="event__desc">{{ event.one_line_pitch }}</p>
+  <p class="event__meta">{{ event.city | upper }}{% if event.venue %} · {{ event.venue | upper }}{% endif %} · ORG {{ event.organizer | upper }}</p>
+</article>
+{% endmacro %}

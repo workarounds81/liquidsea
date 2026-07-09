@@ -1,0 +1,47 @@
+---
+layout: layouts/base.njk
+permalink: /
+---
+{% import "partials/macros.njk" as ui %}
+{% set latestPost = collections.digest | first %}
+{% set latestIssueData = deals[latestPost.data.issue] if latestPost else null %}
+{% set latestDeals = (latestIssueData.deals or []) if latestIssueData else [] %}
+{% set nextEvents = events | upcomingEvents(build.now) | featuredFirst %}
+
+<section class="hero">
+  <div class="container">
+    <p class="kicker kicker--on-ink">SG · TH · VN · ID · PH · MY — WEEKLY</p>
+    <h1 class="display hero__title">Where Southeast Asia's crypto capital surfaces.</h1>
+    <p class="hero__sub">A curated weekly digest of every disclosed Web3 fundraise in the region, read like a tape and written like a zine — plus the events calendar the deals actually happen at.</p>
+  </div>
+  <div class="strip strip--hero">{% issueSounding latestPost.data.issue, latestDeals, 170, true %}</div>
+  <div class="container hero__legend">
+    <span><i class="swatch swatch--chili"></i>BIGGEST ROUND</span>
+    <span><i class="swatch swatch--mango"></i>THIS WEEK'S DEALS</span>
+    <span><i class="swatch swatch--tide"></i>MARKET NOISE</span>
+  </div>
+</section>
+
+<section class="container home-latest" aria-labelledby="latest-heading">
+  <h2 id="latest-heading" class="section-head"><span class="section-head__k">LATEST ISSUE</span> {{ latestPost.data.title }}</h2>
+  <p class="home-latest__meta">ISSUE {{ latestPost.data.issue | weekLabel }} · {{ latestPost.data.date | niceDate | upper }} · {{ latestDeals | length }} DEALS · {{ latestDeals | totalUsd | usd }} DISCLOSED</p>
+  <p class="home-latest__summary">{{ latestPost.data.summary }}</p>
+
+  <h3 class="subhead">TOP LINES</h3>
+  {% for deal in latestDeals | topDeals(3) %}
+    {{ ui.dealRow(deal) }}
+  {% endfor %}
+  <p class="more-link"><a href="{{ latestPost.url }}">Read the full issue →</a></p>
+</section>
+
+<div class="container">
+  {% include "partials/sponsor-slot.njk" %}
+</div>
+
+<section class="container home-events" aria-labelledby="events-heading">
+  <h2 id="events-heading" class="section-head"><span class="section-head__k">RADAR</span> Next on the calendar</h2>
+  {% for event in nextEvents %}{% if loop.index <= 5 %}{{ ui.eventRow(event) }}{% endif %}{% endfor %}
+  <p class="more-link"><a href="/events/">Full events calendar →</a></p>
+</section>
+
+{% include "partials/subscribe.njk" %}

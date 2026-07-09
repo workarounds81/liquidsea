@@ -1,0 +1,48 @@
+---
+layout: layouts/base.njk
+permalink: /events/
+title: "Events calendar"
+description: "The living calendar of Web3 conferences, hackathons, meetups and demo days across Southeast Asia."
+---
+{% import "partials/macros.njk" as ui %}
+{% set upcoming = events | upcomingEvents(build.now) | featuredFirst %}
+
+<section class="container" aria-labelledby="events-heading">
+  <header class="archive__header">
+    <p class="kicker">THE RADAR</p>
+    <h1 id="events-heading" class="display">Events calendar</h1>
+    <p class="archive__sub">Web3 gatherings across Southeast Asia. Past events move to the <a href="/events/archive/">archive</a>. Want your event featured? <a href="/sponsor/">Sponsor page</a>.</p>
+  </header>
+
+  <div class="filters" data-filter-root>
+    <div class="filters__group" role="group" aria-label="Filter by country">
+      <span class="filters__label">MARKET</span>
+      <button type="button" data-filter="country:all" aria-pressed="true">All</button>
+      <button type="button" data-filter="country:Singapore" aria-pressed="false">SG</button>
+      <button type="button" data-filter="country:Thailand" aria-pressed="false">TH</button>
+      <button type="button" data-filter="country:Vietnam" aria-pressed="false">VN</button>
+      <button type="button" data-filter="country:Indonesia" aria-pressed="false">ID</button>
+      <button type="button" data-filter="country:Philippines" aria-pressed="false">PH</button>
+      <button type="button" data-filter="country:Malaysia" aria-pressed="false">MY</button>
+    </div>
+    <div class="filters__group" role="group" aria-label="Filter by event type">
+      <span class="filters__label">TYPE</span>
+      <button type="button" data-filter="type:all" aria-pressed="true">All</button>
+      <button type="button" data-filter="type:Conference" aria-pressed="false">Conference</button>
+      <button type="button" data-filter="type:Hackathon" aria-pressed="false">Hackathon</button>
+      <button type="button" data-filter="type:Meetup" aria-pressed="false">Meetup</button>
+      <button type="button" data-filter="type:Demo Day" aria-pressed="false">Demo Day</button>
+      <button type="button" data-filter="type:Side Event" aria-pressed="false">Side Event</button>
+    </div>
+  </div>
+
+  <div class="events-list">
+    <h2 class="visually-hidden">Upcoming events</h2>
+    {% for event in upcoming %}
+      {{ ui.eventRow(event) }}
+    {% endfor %}
+    <p class="events-empty" data-empty hidden>Nothing matches those filters — yet. Know an event we're missing? <a href="mailto:{{ site.email }}">Tell us</a>.</p>
+  </div>
+</section>
+
+{% jsonldEvents site.url, upcoming %}

@@ -1,0 +1,24 @@
+---
+permalink: /digest/feed.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.name }} — SEA Web3 weekly digest</title>
+  <subtitle>{{ site.description }}</subtitle>
+  <id>{{ site.url }}/</id>
+  <link href="{{ site.url }}/digest/feed.xml" rel="self" type="application/atom+xml"/>
+  <link href="{{ site.url }}/" rel="alternate"/>
+  <updated>{{ collections.digest[0].data.date | rfc3339 }}</updated>
+  <author><name>{{ site.name }}</name><email>{{ site.email }}</email></author>
+  {%- for post in collections.digest %}
+  <entry>
+    <title>{{ post.data.title }} — Issue {{ post.data.issue | weekLabel }}</title>
+    <id>{{ site.url }}{{ post.url }}</id>
+    <link href="{{ site.url }}{{ post.url }}" rel="alternate"/>
+    <updated>{{ post.data.date | rfc3339 }}</updated>
+    <summary>{{ post.data.summary }}</summary>
+    <content type="html">{{ post.templateContent | escape }}</content>
+  </entry>
+  {%- endfor %}
+</feed>
