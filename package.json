@@ -2,7 +2,7 @@
   "name": "liquidsea",
   "version": "1.0.0",
   "private": true,
-  "description": "LiquidSea — curated SEA Web3 deal-flow digest & events calendar",
+  "description": "LiquidSea — curated SEA investment deal-flow digest & events calendar",
   "scripts": {
     "start": "eleventy --serve",
     "validate": "node scripts/validate-data.js",

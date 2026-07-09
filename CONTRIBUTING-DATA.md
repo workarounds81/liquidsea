@@ -1,5 +1,12 @@
 # Contributing data to LiquidSea
 
+LiquidSea covers **disclosed, publicly-reported private-market fundraises
+headquartered in Singapore, Thailand, Vietnam, Indonesia, the Philippines or
+Malaysia** — any sector, not crypto/Web3-only. It does not cover live or
+ongoing fundraises, confidential placement materials, or deals outside the
+six listed markets; see the "What doesn't belong here" note at the end of
+this document.
+
 All site content lives in the repo as data files. This document is the contract:
 any pull request that touches data — written by a human or by an automated
 routine — must follow it exactly. `npm run validate` enforces every rule below
@@ -37,7 +44,7 @@ Top level is an object:
 | --- | --- | --- |
 | `project_name` | string | Non-empty |
 | `one_line_description` | string | Non-empty, one sentence |
-| `category` | enum | One of `DeFi`, `Infra`, `Gaming`, `RWA`, `Payments`, `AI`, `Other` |
+| `category` | enum | One of `DeFi`, `RWA`, `AI`, `Robotics`, `Fintech`, `Payments`, `Biotech`, `Climate`, `Infra`, `Gaming`, `Other` |
 | `country_or_region` | string | Non-empty (`Singapore`, `Vietnam`, `Regional`, …) |
 | `round_type` | enum | One of `Pre-seed`, `Seed`, `Series A`, `Strategic`, `Token`, `Undisclosed` |
 | `amount_usd` | number \| null | Positive number in whole USD (`6500000`), or `null` if undisclosed |
@@ -124,3 +131,23 @@ Run locally before opening the PR:
 ```bash
 npm run validate
 ```
+
+## What doesn't belong here
+
+The digest is independent editorial reporting on deals that have **already
+closed and been publicly disclosed** by the company or reported by
+independent outlets. It is not a channel for:
+
+- **Live or in-progress fundraises** — no SPV allocations, no "contact us to
+  invest," no ticket sizes or subscription terms. If a round hasn't closed
+  and been publicly announced, it isn't a digest entry yet.
+- **Confidential materials** — anything marked confidential, NDA'd, or
+  "not for distribution" doesn't get quoted, summarized, or reformatted into
+  a deal entry, regardless of how newsworthy it is.
+- **Deals the editor is personally involved in raising, advising on, or
+  profiting from** — that's a conflict of interest a reader can't see
+  through an anonymous-looking deal card. Disclosed personal involvement
+  belongs on `/opportunities/`, clearly separated from the independent tape,
+  never mixed into it.
+- **Companies headquartered outside Singapore, Thailand, Vietnam, Indonesia,
+  the Philippines or Malaysia** — the regional scope is the whole point.

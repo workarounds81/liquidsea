@@ -1,9 +1,9 @@
 # LiquidSea — liquidsea.net
 
-Curated SEA Web3 deal-flow digest and events calendar. A weekly editorial
-digest of crypto/Web3 fundraises across Singapore, Thailand, Vietnam,
-Indonesia, the Philippines and Malaysia, plus a living calendar of regional
-Web3 events.
+Curated SEA investment deal-flow digest and events calendar. A weekly
+editorial digest of disclosed private-market fundraises across Singapore,
+Thailand, Vietnam, Indonesia, the Philippines and Malaysia, plus a living
+calendar of regional investment and tech events.
 
 Built with [Eleventy](https://www.11ty.dev/) (Nunjucks templates), deployed to
 GitHub Pages by GitHub Actions. No database, no backend — all content lives in
@@ -44,9 +44,12 @@ npm run build      # validate + build site + generate OG images into _site/
 - **[DEPLOY.md](DEPLOY.md)** — one-time setup: GitHub Pages, DNS records for
   liquidsea.net, ImprovMX email forwarding, Web3Forms key.
 
-## Current content is SAMPLE data
+## Scope
 
-The three seeded digest issues and ten events are fictional, marked
-`"sample": true` in the data and labeled in the copy. Replace them with real
-issues as you publish (delete the sample files whenever you like — the
-validator keeps everything consistent).
+The editorial digest covers only deals that have **already closed and been
+publicly disclosed**, at companies headquartered in the six markets above,
+any sector. It does not cover live/in-progress fundraises, confidential
+placement materials, or deals the editor is personally involved in raising —
+see "What doesn't belong here" in CONTRIBUTING-DATA.md. Disclosed personal
+deal involvement (e.g. syndicating access to a private round) belongs on
+`/opportunities/`, kept clearly separate from the independent tape.

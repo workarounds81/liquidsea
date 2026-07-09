@@ -389,6 +389,7 @@ a:hover { color: var(--ink); }
 .sponsor-offer__num { font-family: var(--font-mono); font-stretch: 100%; font-size: 0.85rem; color: var(--tide); }
 .sponsor-offer__list { font-size: 0.95rem; }
 .sponsor-cta { margin: 1.5rem 0 0; }
+.opportunities-fine { font-size: 0.82rem; color: var(--monsoon); max-width: 62ch; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--ink); }
 .btn {
   display: inline-block; font-family: var(--font-mono); font-weight: 700;
   font-size: 0.95rem; letter-spacing: 0.04em; text-decoration: none;

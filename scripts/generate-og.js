@@ -77,7 +77,7 @@ function issueCard({ issue, title, stats, bars }) {
         },
         [
           txt("div", { fontFamily: "Archivo Black", fontSize: 40, color: PALETTE.foam }, "LIQUIDSEA"),
-          txt("div", { fontFamily: "Spline Sans Mono", fontSize: 22, color: PALETTE.mango, letterSpacing: 2 }, issue ? `ISSUE ${issue}` : "SEA WEB3 DEAL FLOW"),
+          txt("div", { fontFamily: "Spline Sans Mono", fontSize: 22, color: PALETTE.mango, letterSpacing: 2 }, issue ? `ISSUE ${issue}` : "SEA INVESTMENT DEAL FLOW"),
         ]
       ),
       // Title
@@ -139,7 +139,7 @@ async function main() {
   // Site default card
   const def = issueCard({
     issue: null,
-    title: "Where Southeast Asia's crypto capital surfaces.",
+    title: "Where Southeast Asia's investment capital surfaces.",
     stats: "WEEKLY DIGEST + EVENTS · SG TH VN ID PH MY",
     bars: barField("liquidsea-default", null, W, 170),
   });

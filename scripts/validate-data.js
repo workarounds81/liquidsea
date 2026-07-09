@@ -21,7 +21,7 @@ const DEALS_DIR = path.join(ROOT, "src", "data", "deals");
 const EVENTS_FILE = path.join(ROOT, "src", "data", "events.json");
 const DIGEST_DIR = path.join(ROOT, "src", "content", "digest");
 
-const CATEGORIES = ["DeFi", "Infra", "Gaming", "RWA", "Payments", "AI", "Other"];
+const CATEGORIES = ["DeFi", "RWA", "AI", "Robotics", "Fintech", "Payments", "Biotech", "Climate", "Infra", "Gaming", "Other"];
 const ROUND_TYPES = ["Pre-seed", "Seed", "Series A", "Strategic", "Token", "Undisclosed"];
 const EVENT_TYPES = ["Conference", "Meetup", "Hackathon", "Demo Day", "Side Event"];
 
