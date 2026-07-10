@@ -1,7 +1,7 @@
 "use strict";
 
 const { soundingSVG, dealDepths } = require("./src/_lib/sounding.js");
-const { pixelGlobeSVG } = require("./src/_lib/globe.js");
+const { pixelGlobeSVG, starfieldSVG } = require("./src/_lib/globe.js");
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -112,15 +112,19 @@ module.exports = function (eleventyConfig) {
   // Pixelated rotating world map (hero decoration).
   eleventyConfig.addShortcode("pixelGlobe", () => pixelGlobeSVG());
 
+  // Pixel starfield (hero background decoration).
+  eleventyConfig.addShortcode("starfield", () => starfieldSVG());
+
   // Issue header strip — bars encode the week's deal sizes.
-  eleventyConfig.addShortcode("issueSounding", (issue, deals, height = 160, animate = false) =>
+  eleventyConfig.addShortcode("issueSounding", (issue, deals, height = 160, animate = false, macd = false) =>
     soundingSVG({
       seed: `issue-${issue}`,
       values: dealDepths(deals),
       height,
       columns: Math.max(48, (deals || []).length * 8),
       animate,
-      label: `Generative sounding chart for issue ${issue}: one highlighted column per deal, depth scaled to round size.`,
+      macd,
+      label: `Generative sounding chart for issue ${issue}: one highlighted column per deal, depth scaled to round size${macd ? ", with a MACD-style momentum histogram below" : ""}.`,
     })
   );
 

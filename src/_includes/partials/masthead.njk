@@ -17,13 +17,23 @@
     </nav>
   </div>
   {% if latestPost %}
-  <div class="indexstrip" aria-label="Latest market index">
-    <div class="container indexstrip__row">
-      <span class="indexstrip__cell"><span class="indexstrip__k">ISSUE</span> {{ latestPost.data.issue | weekLabel }}</span>
-      <span class="indexstrip__cell"><span class="indexstrip__k">DEALS</span> {{ latestDeals | length }}</span>
-      <span class="indexstrip__cell"><span class="indexstrip__k">DISCLOSED</span> {{ latestDeals | totalUsd | usd }}</span>
-      <span class="indexstrip__cell indexstrip__cell--wide"><span class="indexstrip__k">MKTS</span> {{ latestDeals | countryList }}</span>
-      {% if nextEvent %}<span class="indexstrip__cell indexstrip__cell--wide"><span class="indexstrip__k">NEXT</span> {{ nextEvent.event_name | upper }} · {{ nextEvent.start_date | dateRange(nextEvent.end_date) | upper }}</span>{% endif %}
+  {% set tickerEvents = events | upcomingEvents(build.now) %}
+  <div class="ticker" aria-label="Market ticker">
+    <p class="visually-hidden">Issue {{ latestPost.data.issue | weekLabel }}: {{ latestDeals | length }} deals, {{ latestDeals | totalUsd | usd }} disclosed. Next event: {{ nextEvent.event_name if nextEvent else "none scheduled" }}.</p>
+    <div class="ticker__track" aria-hidden="true">
+      {% for copy in range(0, 2) %}
+      <div class="ticker__group">
+        <span class="ticker__item"><span class="ticker__k">ISSUE</span> {{ latestPost.data.issue | weekLabel }}</span>
+        <span class="ticker__item"><span class="ticker__k">DEALS</span> {{ latestDeals | length }}</span>
+        <span class="ticker__item"><span class="ticker__k">DISCLOSED</span> {{ latestDeals | totalUsd | usd }}</span>
+        {% for deal in latestDeals %}
+        <span class="ticker__item">{{ deal.project_name | upper }} <span class="ticker__up">▲</span> {{ deal.amount_usd | usd }} · {{ deal.country_or_region | cc }} · {{ deal.round_type | upper }}</span>
+        {% endfor %}
+        {% for event in tickerEvents %}{% if loop.index <= 6 %}
+        <span class="ticker__item"><span class="ticker__k">{{ event.country | cc }}</span> {{ event.event_name | upper }} · {{ event.start_date | dateRange(event.end_date) | upper }}</span>
+        {% endif %}{% endfor %}
+      </div>
+      {% endfor %}
     </div>
   </div>
   {% endif %}

@@ -112,15 +112,18 @@ function soundingSVG({
   animate = false,
   background = "none",
   label = null,
+  macd = false,
 } = {}) {
   const bars = soundingBars({ seed, columns, values });
   const parts = [];
+  const macdH = macd ? 54 : 0;
+  const totalH = height + macdH;
   const aria = label
     ? `role="img" aria-label="${escapeAttr(label)}"`
     : `aria-hidden="true" focusable="false"`;
 
   parts.push(
-    `<svg class="sounding${animate ? " sounding--animate" : ""}" ${aria} viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">`
+    `<svg class="sounding${animate ? " sounding--animate" : ""}" ${aria} viewBox="0 0 ${width} ${totalH}" width="${width}" height="${totalH}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">`
   );
   if (background !== "none") {
     parts.push(`<rect width="${width}" height="${height}" fill="${background}"/>`);
@@ -143,18 +146,63 @@ function soundingSVG({
     }
   });
 
-  // EMA overlay — exponentially smoothed depth line traced across the strip.
+  // EMA overlay — exponentially smoothed depth line traced across the strip,
+  // finished with an upward arrowhead at its last point.
   const alpha = 0.28;
   let ema = 0;
-  const pts = bars.map((b, i) => {
+  const emaPts = bars.map((b, i) => {
     ema = i === 0 ? b.depth : alpha * b.depth + (1 - alpha) * ema;
-    const x = ((b.x + b.w / 2) * width).toFixed(1);
-    const y = (4 + ema * (height - 14)).toFixed(1);
-    return `${x} ${y}`;
+    return { x: (b.x + b.w / 2) * width, y: 4 + ema * (height - 14) };
   });
-  if (pts.length > 1) {
+  if (emaPts.length > 1) {
+    const d = emaPts.map((p) => `${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" L ");
     parts.push(
-      `<path class="sounding__ema" pathLength="1" vector-effect="non-scaling-stroke" fill="none" d="M ${pts.join(" L ")}"/>`
+      `<path class="sounding__ema" pathLength="1" vector-effect="non-scaling-stroke" fill="none" d="M ${d}"/>`
+    );
+    const tip = emaPts[emaPts.length - 1];
+    parts.push(
+      `<path class="sounding__emahead" fill="currentColor" d="M ${tip.x.toFixed(1)} ${(tip.y - 16).toFixed(1)} L ${(tip.x - 9).toFixed(1)} ${(tip.y + 2).toFixed(1)} L ${(tip.x + 9).toFixed(1)} ${(tip.y + 2).toFixed(1)} Z"/>`
+    );
+  }
+
+  // MACD-style momentum zone below the tape: fast/slow EMA divergence as a
+  // histogram around a zero line, with the signal line swept in mango.
+  if (macd && bars.length > 2) {
+    const emaSeries = (arr, period) => {
+      const a = 2 / (period + 1);
+      let e = arr[0];
+      return arr.map((v, i) => (e = i ? a * v + (1 - a) * e : v));
+    };
+    const depths = bars.map((b) => b.depth);
+    const fast = emaSeries(depths, 4);
+    const slow = emaSeries(depths, 9);
+    const macdLine = fast.map((v, i) => v - slow[i]);
+    const signal = emaSeries(macdLine, 3);
+    const hist = macdLine.map((v, i) => v - signal[i]);
+
+    const zero = height + 10 + (macdH - 10) / 2;
+    const amp = Math.max(0.0001, ...hist.map(Math.abs), ...signal.map(Math.abs));
+    const scale = (macdH - 18) / 2 / amp;
+
+    parts.push(`<rect x="0" y="${height + 4}" width="${width}" height="2" fill="${PALETTE.monsoon}" opacity="0.55"/>`);
+    parts.push(`<rect x="0" y="${(zero - 0.75).toFixed(2)}" width="${width}" height="1.5" fill="currentColor" opacity="0.3"/>`);
+
+    bars.forEach((b, i) => {
+      const h = Math.max(1, Math.abs(hist[i]) * scale);
+      const up = hist[i] >= 0;
+      const x = ((b.x + b.w * 0.2) * width).toFixed(2);
+      const w = (b.w * 0.6 * width).toFixed(2);
+      const y = (up ? zero - h : zero).toFixed(2);
+      parts.push(
+        `<rect class="sounding__macd sounding__macd--${up ? "up" : "down"}" style="--d:${i * 14}ms" x="${x}" y="${y}" width="${w}" height="${h.toFixed(2)}" fill="${up ? PALETTE.tide : PALETTE.chili}"/>`
+      );
+    });
+
+    const sd = bars
+      .map((b, i) => `${((b.x + b.w / 2) * width).toFixed(1)} ${(zero - signal[i] * scale).toFixed(1)}`)
+      .join(" L ");
+    parts.push(
+      `<path class="sounding__macdline" pathLength="1" vector-effect="non-scaling-stroke" fill="none" d="M ${sd}"/>`
     );
   }
 

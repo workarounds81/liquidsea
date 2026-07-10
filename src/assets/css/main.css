@@ -190,28 +190,49 @@ a:hover { color: var(--ink); }
 .masthead__nav a:hover { border-bottom-color: var(--mango); color: var(--foam); }
 .masthead a:focus-visible { outline-color: var(--mango); }
 
-/* The index strip — a hot mango band of live numbers. */
-.indexstrip {
+/* The ticker — a hot mango band of live numbers, scrolling like a tape. */
+.ticker {
   background: var(--mango);
   color: var(--ink);
   border-top: 3px solid var(--ink);
   border-bottom: 3px solid var(--ink);
-  overflow-x: auto;
+  overflow: hidden;
 }
-.indexstrip__row {
-  display: flex; gap: 2rem;
-  padding-block: 0.45rem;
+.ticker__track {
+  display: flex;
+  width: max-content;
+  animation: tickerScroll 48s linear infinite;
+  will-change: transform;
+}
+.ticker:hover .ticker__track { animation-play-state: paused; }
+.ticker__group {
+  display: flex;
+  gap: 2.6rem;
+  padding: 0.45rem 2.6rem 0.45rem 0;
+  flex: none;
   white-space: nowrap;
   font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.05em;
 }
-.indexstrip__k { color: #2E4A42; margin-right: 0.35em; } /* muted but AA on mango */
+.ticker__k { color: #2E4A42; margin-right: 0.35em; } /* muted but AA on mango */
+.ticker__up { color: var(--tide); }
+@keyframes tickerScroll { to { transform: translateX(-50%); } }
 
 /* ---------- Hero ---------- */
-.hero { background: var(--ink); color: var(--foam); padding-top: clamp(2rem, 6vw, 4.5rem); }
+.hero { background: var(--ink); color: var(--foam); padding-top: clamp(2rem, 6vw, 4.5rem); position: relative; overflow: hidden; }
+.hero > * { position: relative; z-index: 1; }
 .hero__grid { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 3.5rem; }
+
+/* Pixel starfield — three parallax layers drifting and twinkling behind the hero. */
+.hero__stars { position: absolute; inset: 0; z-index: 0; }
+.hero__stars .stars { width: 100%; height: 100%; display: block; }
+.stars__layer { animation: starDrift 90s ease-in-out infinite alternate, starTwinkle 7s ease-in-out infinite alternate; }
+.stars__layer--2 { animation-duration: 65s, 9s; animation-delay: -20s, -3s; }
+.stars__layer--3 { filter: blur(1.4px); animation-duration: 48s, 5.5s; animation-delay: -35s, -1.5s; }
+@keyframes starDrift { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
+@keyframes starTwinkle { from { opacity: 0.5; } to { opacity: 1; } }
 .hero__copy { flex: 1 1 34ch; }
 .hero__title { font-size: clamp(2.1rem, 6.5vw, 4.6rem); max-width: 18ch; }
 .hero__sub { max-width: 52ch; font-size: 1.06rem; color: #C7D6D0; margin-bottom: 2rem; }
@@ -253,7 +274,7 @@ a:hover { color: var(--ink); }
 }
 
 /* EMA line — static trace on quiet strips, sweeping draw on the hero. */
-.sounding__ema { stroke: currentColor; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; opacity: 0.85; }
+.sounding__ema { stroke: currentColor; stroke-width: 4.5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.85; }
 .sounding--animate .sounding__ema {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
@@ -268,10 +289,49 @@ a:hover { color: var(--ink); }
   100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
+/* EMA arrowhead — surfaces when the line completes, bobs upward, exits with it. */
+.sounding__emahead { opacity: 0.85; transform-box: fill-box; transform-origin: center; }
+.sounding--animate .sounding__emahead {
+  opacity: 0;
+  animation: emaHead 9s ease-in-out 1.6s infinite;
+}
+@keyframes emaHead {
+  0%, 54% { opacity: 0; transform: translateY(8px); }
+  62% { opacity: 0.95; transform: translateY(0); }
+  72% { transform: translateY(-5px); }
+  80% { transform: translateY(0); }
+  86% { opacity: 0.95; }
+  100% { opacity: 0; transform: translateY(0); }
+}
+
+/* MACD momentum zone — histogram grows out of the zero line, signal sweeps. */
+.sounding--animate .sounding__macd {
+  transform: scaleY(0);
+  transform-box: fill-box;
+  animation: macdIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  animation-delay: calc(var(--d, 0ms) + 0.9s);
+}
+.sounding--animate .sounding__macd--up { transform-origin: bottom; }
+.sounding--animate .sounding__macd--down { transform-origin: top; }
+@keyframes macdIn { to { transform: scaleY(1); } }
+.sounding__macdline { stroke: var(--mango); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.9; }
+.sounding--animate .sounding__macdline {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: emaSweep 9s ease-in-out 2.1s infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sounding--animate .sounding__bar { animation: none; transform: none; }
   .sounding--animate .sounding__ema { animation: none; stroke-dashoffset: 0; opacity: 0.85; }
+  .sounding--animate .sounding__emahead { animation: none; opacity: 0.85; transform: none; }
+  .sounding--animate .sounding__macd { animation: none; transform: none; }
+  .sounding--animate .sounding__macdline { animation: none; stroke-dashoffset: 0; opacity: 0.9; }
   .globe__spin { animation: none; }
+  .stars__layer { animation: none; }
+  .ticker__track { animation: none; }
+  .ticker { overflow-x: auto; }
 }
 
 /* ---------- Deal rows: instruments, not cards ---------- */

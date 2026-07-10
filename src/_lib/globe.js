@@ -9,7 +9,7 @@
  * Rotation itself is CSS (`.globe__spin`), so reduced-motion can freeze it.
  */
 
-const { PALETTE } = require("./sounding.js");
+const { PALETTE, makeRng } = require("./sounding.js");
 
 // Rough continent boxes: [lonMin, lonMax, latMin, latMax]. Chunky on purpose —
 // at 6° pixels nobody needs coastlines, they need a recognizable silhouette.
@@ -86,4 +86,30 @@ function pixelGlobeSVG() {
   ].join("");
 }
 
-module.exports = { pixelGlobeSVG };
+/**
+ * Pixel starfield — deterministic square "stars" in three parallax layers.
+ * Each layer drifts and twinkles via CSS; the far layer is slightly blurred.
+ * Rendered absolutely behind the hero, so it costs no layout and no JS.
+ */
+function starfieldSVG({ seed = "liquidsea-stars", count = 66, width = 1440, height = 760 } = {}) {
+  const rng = makeRng(seed);
+  const layers = [[], [], []];
+  for (let i = 0; i < count; i++) {
+    const x = (rng() * width).toFixed(0);
+    const y = (rng() * height).toFixed(0);
+    const s = (1.6 + rng() * 2.8).toFixed(1);
+    const roll = rng();
+    const color = roll < 0.72 ? PALETTE.foam : roll < 0.92 ? PALETTE.tide : PALETTE.mango;
+    const o = (0.18 + rng() * 0.5).toFixed(2);
+    layers[i % 3].push(`<rect x="${x}" y="${y}" width="${s}" height="${s}" fill="${color}" opacity="${o}"/>`);
+  }
+  return [
+    `<svg class="stars" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">`,
+    `<g class="stars__layer stars__layer--1">${layers[0].join("")}</g>`,
+    `<g class="stars__layer stars__layer--2">${layers[1].join("")}</g>`,
+    `<g class="stars__layer stars__layer--3">${layers[2].join("")}</g>`,
+    `</svg>`,
+  ].join("");
+}
+
+module.exports = { pixelGlobeSVG, starfieldSVG };

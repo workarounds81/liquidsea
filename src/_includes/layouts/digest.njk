@@ -8,7 +8,7 @@ layout: layouts/base.njk
     <h1 class="display issue__title">{{ title }}</h1>
     <p class="issue__stats">{{ issueDeals | length }} DEALS · {{ issueDeals | totalUsd | usd }} DISCLOSED · MKTS {{ issueDeals | countryList }}</p>
   </header>
-  <div class="strip strip--issue">{% issueSounding issue, issueDeals, 150 %}</div>
+  <div class="strip strip--issue">{% issueSounding issue, issueDeals, 150, false, true %}</div>
 
   <div class="container issue__body">
     <div class="prose issue__intro">
