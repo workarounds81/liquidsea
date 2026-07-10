@@ -132,15 +132,31 @@ function soundingSVG({
     const x = (b.x * width).toFixed(2);
     const w = (b.w * width).toFixed(2);
     const h = (b.depth * (height - 14)).toFixed(2);
+    // --d staggers the one-time scan-in; --d2 staggers the slow ambient swell.
     parts.push(
-      `<rect class="sounding__bar" style="--d:${i * 14}ms" x="${x}" y="4" width="${w}" height="${h}" fill="${b.color}"/>`
+      `<rect class="sounding__bar" style="--d:${i * 14}ms;--d2:${i * 110}ms" x="${x}" y="4" width="${w}" height="${h}" fill="${b.color}"/>`
     );
     if (b.tick) {
       parts.push(
-        `<rect class="sounding__bar" style="--d:${i * 14}ms" x="${x}" y="${(4 + Number(h)).toFixed(2)}" width="${w}" height="4" fill="${PALETTE.ink === b.color ? PALETTE.mango : PALETTE.ink}"/>`
+        `<rect class="sounding__bar" style="--d:${i * 14}ms;--d2:${i * 110}ms" x="${x}" y="${(4 + Number(h)).toFixed(2)}" width="${w}" height="4" fill="${PALETTE.ink === b.color ? PALETTE.mango : PALETTE.ink}"/>`
       );
     }
   });
+
+  // EMA overlay — exponentially smoothed depth line traced across the strip.
+  const alpha = 0.28;
+  let ema = 0;
+  const pts = bars.map((b, i) => {
+    ema = i === 0 ? b.depth : alpha * b.depth + (1 - alpha) * ema;
+    const x = ((b.x + b.w / 2) * width).toFixed(1);
+    const y = (4 + ema * (height - 14)).toFixed(1);
+    return `${x} ${y}`;
+  });
+  if (pts.length > 1) {
+    parts.push(
+      `<path class="sounding__ema" pathLength="1" vector-effect="non-scaling-stroke" fill="none" d="M ${pts.join(" L ")}"/>`
+    );
+  }
 
   parts.push(`</svg>`);
   return parts.join("");

@@ -211,9 +211,17 @@ a:hover { color: var(--ink); }
 
 /* ---------- Hero ---------- */
 .hero { background: var(--ink); color: var(--foam); padding-top: clamp(2rem, 6vw, 4.5rem); }
+.hero__grid { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 3.5rem; }
+.hero__copy { flex: 1 1 34ch; }
 .hero__title { font-size: clamp(2.1rem, 6.5vw, 4.6rem); max-width: 18ch; }
 .hero__sub { max-width: 52ch; font-size: 1.06rem; color: #C7D6D0; margin-bottom: 2rem; }
 .hero .strip { color: var(--foam); }
+
+/* Pixel globe — equirect world map panning behind a circular mask. */
+.hero__globe { flex: 0 1 auto; margin-inline: auto; padding-bottom: 1.5rem; }
+.hero__globe .globe { display: block; width: min(300px, 68vw); height: auto; }
+.globe__spin { animation: globeSpin 44s linear infinite; }
+@keyframes globeSpin { to { transform: translateX(-360px); } }
 .hero__legend {
   display: flex; flex-wrap: wrap; gap: 0.5rem 1.8rem;
   padding-block: 0.8rem 1.1rem;
@@ -233,12 +241,37 @@ a:hover { color: var(--ink); }
   transform: scaleY(0);
   transform-origin: top;
   transform-box: fill-box;
-  animation: soundIn 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
-  animation-delay: var(--d, 0ms);
+  /* Scan in once, then settle into a slow staggered swell. */
+  animation:
+    soundIn 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) var(--d, 0ms) forwards,
+    soundSwell 7s ease-in-out calc(var(--d2, 0ms) + 1.4s) infinite;
 }
 @keyframes soundIn { to { transform: scaleY(1); } }
+@keyframes soundSwell {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.82); }
+}
+
+/* EMA line — static trace on quiet strips, sweeping draw on the hero. */
+.sounding__ema { stroke: currentColor; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; opacity: 0.85; }
+.sounding--animate .sounding__ema {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0;
+  animation: emaSweep 9s ease-in-out 1.6s infinite;
+}
+@keyframes emaSweep {
+  0% { stroke-dashoffset: 1; opacity: 0; }
+  6% { opacity: 0.9; }
+  60% { stroke-dashoffset: 0; opacity: 0.9; }
+  86% { stroke-dashoffset: 0; opacity: 0.9; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .sounding--animate .sounding__bar { animation: none; transform: none; }
+  .sounding--animate .sounding__ema { animation: none; stroke-dashoffset: 0; opacity: 0.85; }
+  .globe__spin { animation: none; }
 }
 
 /* ---------- Deal rows: instruments, not cards ---------- */

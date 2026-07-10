@@ -1,6 +1,7 @@
 "use strict";
 
 const { soundingSVG, dealDepths } = require("./src/_lib/sounding.js");
+const { pixelGlobeSVG } = require("./src/_lib/globe.js");
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
@@ -107,6 +108,9 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addShortcode("sounding", (seed, height = 120, columns = 60, animate = false) =>
     soundingSVG({ seed, height, columns, animate })
   );
+
+  // Pixelated rotating world map (hero decoration).
+  eleventyConfig.addShortcode("pixelGlobe", () => pixelGlobeSVG());
 
   // Issue header strip — bars encode the week's deal sizes.
   eleventyConfig.addShortcode("issueSounding", (issue, deals, height = 160, animate = false) =>
