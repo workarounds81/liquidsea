@@ -1,5 +1,7 @@
 "use strict";
 
+const fs = require("fs");
+const crypto = require("crypto");
 const { soundingSVG, dealDepths } = require("./src/_lib/sounding.js");
 const { pixelGlobeSVG, starfieldSVG } = require("./src/_lib/globe.js");
 
@@ -95,6 +97,16 @@ module.exports = function (eleventyConfig) {
   });
 
   eleventyConfig.addFilter("jsonld", (obj) => JSON.stringify(obj, null, 0));
+
+  // Content-hash for cache busting: assets keep stable names but every deploy
+  // that changes them forces browsers past their cached copy.
+  const hashCache = {};
+  eleventyConfig.addFilter("assetHash", (srcPath) => {
+    if (!hashCache[srcPath]) {
+      hashCache[srcPath] = crypto.createHash("md5").update(fs.readFileSync(srcPath)).digest("hex").slice(0, 8);
+    }
+    return hashCache[srcPath];
+  });
 
   eleventyConfig.addFilter("countryList", (deals) => {
     const seen = new Set();

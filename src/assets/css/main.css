@@ -258,16 +258,18 @@ a:hover { color: var(--ink); }
 .strip svg { display: block; width: 100%; height: auto; }
 .strip--issue { background: var(--ink); color: var(--foam); }
 
+/* Hidden start-states live in the keyframes (with backwards fill), never on
+   the elements themselves: if an animation fails to run on some browser, the
+   worst case is a complete static chart — never a missing one. */
 .sounding--animate .sounding__bar {
-  transform: scaleY(0);
   transform-origin: top;
   transform-box: fill-box;
   /* Scan in once, then settle into a slow staggered swell. */
   animation:
-    soundIn 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) var(--d, 0ms) forwards,
+    soundIn 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) var(--d, 0ms) backwards,
     soundSwell 7s ease-in-out calc(var(--d2, 0ms) + 1.4s) infinite;
 }
-@keyframes soundIn { to { transform: scaleY(1); } }
+@keyframes soundIn { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes soundSwell {
   0%, 100% { transform: scaleY(1); }
   50% { transform: scaleY(0.82); }
@@ -277,9 +279,7 @@ a:hover { color: var(--ink); }
 .sounding__ema { stroke: currentColor; stroke-width: 4.5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.85; }
 .sounding--animate .sounding__ema {
   stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  opacity: 0;
-  animation: emaSweep 9s ease-in-out 1.6s infinite;
+  animation: emaSweep 9s ease-in-out 1.6s infinite backwards;
 }
 @keyframes emaSweep {
   0% { stroke-dashoffset: 1; opacity: 0; }
@@ -292,8 +292,7 @@ a:hover { color: var(--ink); }
 /* EMA arrowhead — surfaces when the line completes, bobs upward, exits with it. */
 .sounding__emahead { opacity: 0.85; transform-box: fill-box; transform-origin: center; }
 .sounding--animate .sounding__emahead {
-  opacity: 0;
-  animation: emaHead 9s ease-in-out 1.6s infinite;
+  animation: emaHead 9s ease-in-out 1.6s infinite backwards;
 }
 @keyframes emaHead {
   0%, 54% { opacity: 0; transform: translateY(8px); }
@@ -306,30 +305,29 @@ a:hover { color: var(--ink); }
 
 /* MACD momentum zone — histogram grows out of the zero line, signal sweeps. */
 .sounding--animate .sounding__macd {
-  transform: scaleY(0);
   transform-box: fill-box;
-  animation: macdIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+  animation: macdIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
   animation-delay: calc(var(--d, 0ms) + 0.9s);
 }
 .sounding--animate .sounding__macd--up { transform-origin: bottom; }
 .sounding--animate .sounding__macd--down { transform-origin: top; }
-@keyframes macdIn { to { transform: scaleY(1); } }
+@keyframes macdIn { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .sounding__macdline { stroke: var(--mango); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.9; }
 .sounding--animate .sounding__macdline {
   stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  opacity: 0;
-  animation: emaSweep 9s ease-in-out 2.1s infinite;
+  animation: emaSweep 9s ease-in-out 2.1s infinite backwards;
 }
 
+/* Reduce-motion: every element's base state is the finished chart, so
+   removing the animations leaves a complete static rendering. */
 @media (prefers-reduced-motion: reduce) {
-  .sounding--animate .sounding__bar { animation: none; transform: none; }
-  .sounding--animate .sounding__ema { animation: none; stroke-dashoffset: 0; opacity: 0.85; }
-  .sounding--animate .sounding__emahead { animation: none; opacity: 0.85; transform: none; }
-  .sounding--animate .sounding__macd { animation: none; transform: none; }
-  .sounding--animate .sounding__macdline { animation: none; stroke-dashoffset: 0; opacity: 0.9; }
-  .globe__spin { animation: none; }
-  .stars__layer { animation: none; }
+  .sounding--animate .sounding__bar,
+  .sounding--animate .sounding__ema,
+  .sounding--animate .sounding__emahead,
+  .sounding--animate .sounding__macd,
+  .sounding--animate .sounding__macdline,
+  .globe__spin,
+  .stars__layer,
   .ticker__track { animation: none; }
   .ticker { overflow-x: auto; }
 }
