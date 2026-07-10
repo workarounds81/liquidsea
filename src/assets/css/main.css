@@ -543,4 +543,11 @@ a:hover { color: var(--ink); }
   .archive-row__link { grid-template-columns: 1fr; gap: 0.6rem; }
   .deal__amt, .event__date { margin-left: 0; width: 100%; }
   .issue__pager { flex-direction: column; }
+
+  /* Phones squash the wide strip SVGs to a sliver at natural aspect; the
+     SVGs ship with preserveAspectRatio="none", so stretch them back to a
+     readable instrument height. vector-effect keeps line weights true. */
+  .strip--hero .sounding, .strip--issue .sounding { height: 150px; }
+  .archive-row__strip .sounding { height: 56px; }
+  .thanks-page .strip .sounding { height: 64px; }
 }
