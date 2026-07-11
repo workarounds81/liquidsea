@@ -1,3 +1,25 @@
+/* Site-wide motion pause toggle — the accessibility control for all
+   animations (the OS reduce-motion signal is ignored by design; see CSS). */
+(function () {
+  "use strict";
+  var btn = document.querySelector("[data-motion-toggle]");
+  if (!btn) return;
+  var KEY = "ls-motion";
+  var root = document.documentElement;
+  function apply(off) {
+    root.classList.toggle("motion-off", off);
+    btn.setAttribute("aria-pressed", String(off));
+    btn.textContent = off ? "▶" : "⏸";
+    btn.setAttribute("aria-label", off ? "Resume animations" : "Pause animations");
+  }
+  apply(root.classList.contains("motion-off"));
+  btn.addEventListener("click", function () {
+    var off = !root.classList.contains("motion-off");
+    try { localStorage.setItem(KEY, off ? "off" : "on"); } catch (e) { /* private mode */ }
+    apply(off);
+  });
+})();
+
 /* Events calendar filters — vanilla JS, no dependencies (~1KB). */
 (function () {
   "use strict";

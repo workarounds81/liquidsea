@@ -20,6 +20,7 @@
   {% set tickerEvents = events | upcomingEvents(build.now) %}
   <div class="ticker" aria-label="Market ticker">
     <p class="visually-hidden">Issue {{ latestPost.data.issue | weekLabel }}: {{ latestDeals | length }} deals, {{ latestDeals | totalUsd | usd }} disclosed. Next event: {{ nextEvent.event_name if nextEvent else "none scheduled" }}.</p>
+    <button class="ticker__pause" type="button" data-motion-toggle aria-pressed="false" aria-label="Pause animations">⏸</button>
     <div class="ticker__track" aria-hidden="true">
       {% for copy in range(0, 2) %}
       <div class="ticker__group">

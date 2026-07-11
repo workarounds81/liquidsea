@@ -204,7 +204,11 @@ a:hover { color: var(--ink); }
   animation: tickerScroll 48s linear infinite;
   will-change: transform;
 }
-.ticker:hover .ticker__track { animation-play-state: paused; }
+/* Pause-on-hover only where hover is real — on touch screens a tap leaves
+   sticky :hover, which would freeze the tape. */
+@media (hover: hover) {
+  .ticker:hover .ticker__track { animation-play-state: paused; }
+}
 .ticker__group {
   display: flex;
   gap: 2.6rem;
@@ -219,6 +223,19 @@ a:hover { color: var(--ink); }
 .ticker__k { color: #2E4A42; margin-right: 0.35em; } /* muted but AA on mango */
 .ticker__up { color: var(--tide); }
 @keyframes tickerScroll { to { transform: translateX(-50%); } }
+
+/* The site-wide motion pause control — pinned over the ticker's right edge. */
+.ticker { position: relative; }
+.ticker__pause {
+  position: absolute; top: 0; right: 0; bottom: 0; z-index: 1;
+  min-width: 44px;
+  background: var(--ink); color: var(--mango);
+  border: 0; border-left: 3px solid var(--ink);
+  font-size: 0.9rem; line-height: 1;
+  cursor: pointer;
+}
+.ticker__pause:hover { color: var(--foam); }
+.ticker__pause:focus-visible { outline: 3px solid var(--mango); outline-offset: -3px; }
 
 /* ---------- Hero ---------- */
 .hero { background: var(--ink); color: var(--foam); padding-top: clamp(2rem, 6vw, 4.5rem); position: relative; overflow: hidden; }
@@ -322,22 +339,22 @@ a:hover { color: var(--ink); }
   animation: emaSweep 9s ease-in-out 2.1s infinite backwards;
 }
 
-/* Reduce-motion: every element's base state is the finished chart, so
-   removing the animations leaves a complete static rendering. Note that
-   Android battery saver and Samsung "Remove animations" force this signal
-   on without users realizing — html.force-motion (set by visiting any URL
-   with #motion) overrides it for diagnostics and opt-in. */
-@media (prefers-reduced-motion: reduce) {
-  html:not(.force-motion) .sounding--animate .sounding__bar,
-  html:not(.force-motion) .sounding--animate .sounding__ema,
-  html:not(.force-motion) .sounding--animate .sounding__emahead,
-  html:not(.force-motion) .sounding--animate .sounding__macd,
-  html:not(.force-motion) .sounding--animate .sounding__macdline,
-  html:not(.force-motion) .globe__spin,
-  html:not(.force-motion) .stars__layer,
-  html:not(.force-motion) .ticker__track { animation: none; }
-  html:not(.force-motion) .ticker { overflow-x: auto; }
-}
+/* Motion policy: animations run for everyone regardless of the OS
+   reduce-motion signal (Android battery saver force-sets it, freezing the
+   site for users who never chose anything). The accessibility mechanism is
+   the visible pause button on the ticker instead — it toggles html.motion-off,
+   persists in localStorage, and stops every animation on the site. Every
+   element's base state is the finished chart, so pausing leaves a complete
+   static rendering. */
+html.motion-off .sounding--animate .sounding__bar,
+html.motion-off .sounding--animate .sounding__ema,
+html.motion-off .sounding--animate .sounding__emahead,
+html.motion-off .sounding--animate .sounding__macd,
+html.motion-off .sounding--animate .sounding__macdline,
+html.motion-off .globe__spin,
+html.motion-off .stars__layer,
+html.motion-off .ticker__track { animation: none; }
+html.motion-off .ticker { overflow-x: auto; }
 
 /* ---------- Deal rows: instruments, not cards ---------- */
 .deal { border-top: var(--rule); padding: 1rem 0 1.2rem; }
