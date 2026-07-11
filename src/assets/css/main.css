@@ -260,14 +260,19 @@ a:hover { color: var(--ink); }
 
 /* Hidden start-states live in the keyframes (with backwards fill), never on
    the elements themselves: if an animation fails to run on some browser, the
-   worst case is a complete static chart — never a missing one. */
+   worst case is a complete static chart — never a missing one.
+   Transform origins are numeric per-element inline styles in view-box units
+   (Safari mishandles keyword origins with fill-box on SVG). Longhand
+   animation properties avoid shorthand parsing edge cases on OEM browsers. */
 .sounding--animate .sounding__bar {
-  transform-origin: top;
-  transform-box: fill-box;
+  transform-box: view-box;
   /* Scan in once, then settle into a slow staggered swell. */
-  animation:
-    soundIn 0.55s cubic-bezier(0.2, 0.9, 0.3, 1) var(--d, 0ms) backwards,
-    soundSwell 7s ease-in-out calc(var(--d2, 0ms) + 1.4s) infinite;
+  animation-name: soundIn, soundSwell;
+  animation-duration: 0.55s, 7s;
+  animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1), ease-in-out;
+  animation-delay: var(--d, 0ms), var(--d2, 1400ms);
+  animation-iteration-count: 1, infinite;
+  animation-fill-mode: backwards, none;
 }
 @keyframes soundIn { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes soundSwell {
@@ -289,8 +294,9 @@ a:hover { color: var(--ink); }
   100% { stroke-dashoffset: 0; opacity: 0; }
 }
 
-/* EMA arrowhead — surfaces when the line completes, bobs upward, exits with it. */
-.sounding__emahead { opacity: 0.85; transform-box: fill-box; transform-origin: center; }
+/* EMA arrowhead — surfaces when the line completes, bobs upward, exits with
+   it. Translation-only animation, so no transform-origin is needed. */
+.sounding__emahead { opacity: 0.85; }
 .sounding--animate .sounding__emahead {
   animation: emaHead 9s ease-in-out 1.6s infinite backwards;
 }
@@ -305,12 +311,10 @@ a:hover { color: var(--ink); }
 
 /* MACD momentum zone — histogram grows out of the zero line, signal sweeps. */
 .sounding--animate .sounding__macd {
-  transform-box: fill-box;
+  transform-box: view-box;
   animation: macdIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1) backwards;
-  animation-delay: calc(var(--d, 0ms) + 0.9s);
+  animation-delay: var(--dm, 900ms);
 }
-.sounding--animate .sounding__macd--up { transform-origin: bottom; }
-.sounding--animate .sounding__macd--down { transform-origin: top; }
 @keyframes macdIn { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 .sounding__macdline { stroke: var(--mango); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; opacity: 0.9; }
 .sounding--animate .sounding__macdline {

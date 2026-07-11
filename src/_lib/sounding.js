@@ -135,13 +135,17 @@ function soundingSVG({
     const x = (b.x * width).toFixed(2);
     const w = (b.w * width).toFixed(2);
     const h = (b.depth * (height - 14)).toFixed(2);
-    // --d staggers the one-time scan-in; --d2 staggers the slow ambient swell.
+    // --d staggers the one-time scan-in; --d2 staggers the slow ambient swell
+    // (entry offset pre-baked so the CSS needs no calc()). Numeric
+    // transform-origin in view-box units: Safari mishandles keyword origins
+    // with fill-box on SVG elements, so never rely on them.
+    const barStyle = `--d:${i * 14}ms;--d2:${i * 110 + 1400}ms;transform-origin:0px 4px`;
     parts.push(
-      `<rect class="sounding__bar" style="--d:${i * 14}ms;--d2:${i * 110}ms" x="${x}" y="4" width="${w}" height="${h}" fill="${b.color}"/>`
+      `<rect class="sounding__bar" style="${barStyle}" x="${x}" y="4" width="${w}" height="${h}" fill="${b.color}"/>`
     );
     if (b.tick) {
       parts.push(
-        `<rect class="sounding__bar" style="--d:${i * 14}ms;--d2:${i * 110}ms" x="${x}" y="${(4 + Number(h)).toFixed(2)}" width="${w}" height="4" fill="${PALETTE.ink === b.color ? PALETTE.mango : PALETTE.ink}"/>`
+        `<rect class="sounding__bar" style="${barStyle}" x="${x}" y="${(4 + Number(h)).toFixed(2)}" width="${w}" height="4" fill="${PALETTE.ink === b.color ? PALETTE.mango : PALETTE.ink}"/>`
       );
     }
   });
@@ -193,8 +197,9 @@ function soundingSVG({
       const x = ((b.x + b.w * 0.2) * width).toFixed(2);
       const w = (b.w * 0.6 * width).toFixed(2);
       const y = (up ? zero - h : zero).toFixed(2);
+      // Origin pinned to the zero line so histogram bars grow out of it.
       parts.push(
-        `<rect class="sounding__macd sounding__macd--${up ? "up" : "down"}" style="--d:${i * 14}ms" x="${x}" y="${y}" width="${w}" height="${h.toFixed(2)}" fill="${up ? PALETTE.tide : PALETTE.chili}"/>`
+        `<rect class="sounding__macd" style="--dm:${i * 14 + 900}ms;transform-origin:0px ${zero.toFixed(2)}px" x="${x}" y="${y}" width="${w}" height="${h.toFixed(2)}" fill="${up ? PALETTE.tide : PALETTE.chili}"/>`
       );
     });
 
