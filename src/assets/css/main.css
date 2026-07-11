@@ -323,17 +323,20 @@ a:hover { color: var(--ink); }
 }
 
 /* Reduce-motion: every element's base state is the finished chart, so
-   removing the animations leaves a complete static rendering. */
+   removing the animations leaves a complete static rendering. Note that
+   Android battery saver and Samsung "Remove animations" force this signal
+   on without users realizing — html.force-motion (set by visiting any URL
+   with #motion) overrides it for diagnostics and opt-in. */
 @media (prefers-reduced-motion: reduce) {
-  .sounding--animate .sounding__bar,
-  .sounding--animate .sounding__ema,
-  .sounding--animate .sounding__emahead,
-  .sounding--animate .sounding__macd,
-  .sounding--animate .sounding__macdline,
-  .globe__spin,
-  .stars__layer,
-  .ticker__track { animation: none; }
-  .ticker { overflow-x: auto; }
+  html:not(.force-motion) .sounding--animate .sounding__bar,
+  html:not(.force-motion) .sounding--animate .sounding__ema,
+  html:not(.force-motion) .sounding--animate .sounding__emahead,
+  html:not(.force-motion) .sounding--animate .sounding__macd,
+  html:not(.force-motion) .sounding--animate .sounding__macdline,
+  html:not(.force-motion) .globe__spin,
+  html:not(.force-motion) .stars__layer,
+  html:not(.force-motion) .ticker__track { animation: none; }
+  html:not(.force-motion) .ticker { overflow-x: auto; }
 }
 
 /* ---------- Deal rows: instruments, not cards ---------- */
