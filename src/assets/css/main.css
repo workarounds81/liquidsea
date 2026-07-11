@@ -237,9 +237,47 @@ a:hover { color: var(--ink); }
 .ticker__pause:hover { color: var(--foam); }
 .ticker__pause:focus-visible { outline: 3px solid var(--mango); outline-offset: -3px; }
 
+/* ---------- Home: dark terminal mode with fixed background instruments ---------- */
+body.home-dark {
+  background: var(--ink);
+  color: var(--foam);
+  --rule: 3px solid var(--foam);
+}
+body.home-dark a { color: var(--mango); }
+body.home-dark a:hover { color: var(--foam); }
+body.home-dark :focus-visible { outline-color: var(--mango); }
+
+/* The fixed layer: stars fill the viewport, globe hangs upper right, the
+   live tape sits in the lower third — all of it stays put while content
+   scrolls over, dimmed enough to keep text on top readable (AA-checked). */
+.home-bg { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.home-bg .stars { position: absolute; inset: 0; width: 100%; height: 100%; }
+.home-bg .globe {
+  position: absolute; top: 8vh; right: max(-4rem, -8vw);
+  width: min(52vmin, 460px); height: auto;
+  opacity: 0.34;
+}
+.home-bg__strip { position: absolute; left: 0; right: 0; bottom: 8vh; opacity: 0.28; color: var(--foam); }
+.home-bg__strip svg { display: block; width: 100%; height: auto; }
+
+/* Dark-home component overrides (base palette is ink-on-foam). */
+body.home-dark .section-head { border-top-color: var(--foam); }
+body.home-dark .section-head__k { background: var(--foam); color: var(--ink); }
+body.home-dark .subhead,
+body.home-dark .deal__round,
+body.home-dark .deal__inv,
+body.home-dark .deal__amt--na,
+body.home-dark .event__meta { color: #8FA5A0; }
+body.home-dark .kicker { color: var(--mango); }
+body.home-dark .chip { border-color: var(--foam); }
+body.home-dark .chip--featured { border-color: var(--chili); }
+body.home-dark .deal__cc { background: var(--foam); color: var(--ink); }
+body.home-dark .event__name a { color: var(--foam); text-decoration-color: var(--mango); }
+
 /* ---------- Hero ---------- */
 .hero { background: var(--ink); color: var(--foam); padding-top: clamp(2rem, 6vw, 4.5rem); position: relative; overflow: hidden; }
 .hero > * { position: relative; z-index: 1; }
+body.home-dark .hero { background: none; overflow: visible; padding-bottom: clamp(2rem, 8vh, 5rem); }
 .hero__grid { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem 3.5rem; }
 
 /* Pixel starfield — three parallax layers drifting and twinkling behind the hero. */
@@ -569,7 +607,7 @@ html.motion-off .ticker { overflow-x: auto; }
   /* Phones squash the wide strip SVGs to a sliver at natural aspect; the
      SVGs ship with preserveAspectRatio="none", so stretch them back to a
      readable instrument height. vector-effect keeps line weights true. */
-  .strip--hero .sounding, .strip--issue .sounding { height: 150px; }
+  .strip--hero .sounding, .strip--issue .sounding, .home-bg__strip .sounding { height: 150px; }
   .archive-row__strip .sounding { height: 56px; }
   .thanks-page .strip .sounding { height: 64px; }
 }

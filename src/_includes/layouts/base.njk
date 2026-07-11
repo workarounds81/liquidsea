@@ -29,7 +29,7 @@
      accessibility mechanism instead. #}
   <script>try{if(localStorage.getItem("ls-motion")==="off")document.documentElement.className+=" motion-off"}catch(e){}</script>
 </head>
-<body>
+<body{% if bodyClass %} class="{{ bodyClass }}"{% endif %}>
   <a class="skip-link" href="#main">Skip to content</a>
   {% include "partials/masthead.njk" %}
   <main id="main">
