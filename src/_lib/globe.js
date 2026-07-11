@@ -51,7 +51,7 @@ function inBox(box, lon, lat) {
   return lon >= box[0] && lon < box[1] && lat >= box[2] && lat < box[3];
 }
 
-function pixelGlobeSVG() {
+function pixelGlobeSVG({ idSuffix = "" } = {}) {
   const cellDeg = 6;                 // degrees per pixel-cell
   const px = 6;                      // SVG units per cell
   const cols = 360 / cellDeg;        // 60
@@ -71,15 +71,18 @@ function pixelGlobeSVG() {
     }
   }
 
+  // Unique ids per instance — the globe can appear more than once per page.
+  const mapId = `worldmap${idSuffix}`;
+  const clipId = `globeclip${idSuffix}`;
   return [
     `<svg class="globe" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">`,
-    `<defs><g id="worldmap">`,
+    `<defs><g id="${mapId}">`,
     `<path fill="${PALETTE.tide}" d="${paths.land.join("")}"/>`,
     `<path fill="${PALETTE.mango}" d="${paths.sea.join("")}"/>`,
     `<path fill="${PALETTE.chili}" d="${paths.sg.join("")}"/>`,
-    `</g><clipPath id="globeclip"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1}"/></clipPath></defs>`,
-    `<g clip-path="url(#globeclip)"><g class="globe__spin">`,
-    `<use href="#worldmap"/><use href="#worldmap" x="${mapW}"/>`,
+    `</g><clipPath id="${clipId}"><circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1}"/></clipPath></defs>`,
+    `<g clip-path="url(#${clipId})"><g class="globe__spin">`,
+    `<use href="#${mapId}"/><use href="#${mapId}" x="${mapW}"/>`,
     `</g></g>`,
     `<circle cx="${size / 2}" cy="${size / 2}" r="${size / 2 - 1}" fill="none" stroke="${PALETTE.monsoon}" stroke-width="1.5"/>`,
     `</svg>`,

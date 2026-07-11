@@ -1,7 +1,6 @@
 ---
 layout: layouts/base.njk
 permalink: /
-bodyClass: home-dark
 ---
 {% import "partials/macros.njk" as ui %}
 {% set latestPost = collections.digest | first %}
@@ -9,26 +8,29 @@ bodyClass: home-dark
 {% set latestDeals = (latestIssueData.deals or []) if latestIssueData else [] %}
 {% set nextEvents = events | upcomingEvents(build.now) | featuredFirst %}
 
-{# Fixed background instruments — stars, globe and the live tape stay in
-   place while the whole page scrolls over them. #}
-<div class="home-bg" aria-hidden="true">
-  {% starfield %}
-  {% pixelGlobe %}
-  <div class="home-bg__strip">{% issueSounding latestPost.data.issue, latestDeals, 170, true, true %}</div>
+{# Faint fixed watermark — the globe and tape follow the scroll behind the
+   light sections, quiet enough to never compete with the text. The hero's
+   opaque block covers it at the top, where the vivid versions live. #}
+<div class="page-watermark" aria-hidden="true">
+  {% pixelGlobe "-wm" %}
+  <div class="page-watermark__strip">{% issueSounding latestPost.data.issue, latestDeals, 170 %}</div>
 </div>
 
 <section class="hero">
-  <div class="container">
+  <div class="hero__stars">{% starfield %}</div>
+  <div class="container hero__grid">
     <div class="hero__copy">
       <p class="kicker kicker--on-ink">SG · TH · VN · ID · PH · MY — WEEKLY</p>
       <h1 class="display hero__title">Where Southeast Asia's investment capital surfaces.</h1>
       <p class="hero__sub">A curated weekly digest of every disclosed private-market fundraise in the region, read like a tape and written like a zine — plus the events calendar the deals actually happen at.</p>
     </div>
-    <div class="hero__legend">
-      <span><i class="swatch swatch--chili"></i>BIGGEST ROUND</span>
-      <span><i class="swatch swatch--mango"></i>THIS WEEK'S DEALS</span>
-      <span><i class="swatch swatch--tide"></i>MARKET NOISE</span>
-    </div>
+    <div class="hero__globe">{% pixelGlobe %}</div>
+  </div>
+  <div class="strip strip--hero">{% issueSounding latestPost.data.issue, latestDeals, 170, true, true %}</div>
+  <div class="container hero__legend">
+    <span><i class="swatch swatch--chili"></i>BIGGEST ROUND</span>
+    <span><i class="swatch swatch--mango"></i>THIS WEEK'S DEALS</span>
+    <span><i class="swatch swatch--tide"></i>MARKET NOISE</span>
   </div>
 </section>
 

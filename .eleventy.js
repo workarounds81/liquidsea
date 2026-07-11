@@ -121,8 +121,9 @@ module.exports = function (eleventyConfig) {
     soundingSVG({ seed, height, columns, animate })
   );
 
-  // Pixelated rotating world map (hero decoration).
-  eleventyConfig.addShortcode("pixelGlobe", () => pixelGlobeSVG());
+  // Pixelated rotating world map (hero decoration). Pass a suffix when the
+  // globe appears more than once on a page so SVG ids stay unique.
+  eleventyConfig.addShortcode("pixelGlobe", (idSuffix = "") => pixelGlobeSVG({ idSuffix }));
 
   // Pixel starfield (hero background decoration).
   eleventyConfig.addShortcode("starfield", () => starfieldSVG());
