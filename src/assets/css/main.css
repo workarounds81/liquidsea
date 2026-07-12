@@ -268,6 +268,20 @@ a:hover { color: var(--ink); }
 .stars__layer--3 { filter: blur(1.4px); animation-duration: 48s, 5.5s; animation-delay: -35s, -1.5s; }
 @keyframes starDrift { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
 @keyframes starTwinkle { from { opacity: 0.5; } to { opacity: 1; } }
+
+/* Distant shooting stars — a ~1s streak per long cycle, staggered so they
+   feel rare. Base state is invisible: decor that only exists in motion. */
+.shoot { opacity: 0; }
+.stars .shoot { animation: shootAcross 17s linear 4s infinite; }
+.stars .shoot--2 { animation-duration: 23s; animation-delay: 9s; }
+.stars .shoot--3 { animation-duration: 29s; animation-delay: 15s; }
+@keyframes shootAcross {
+  0% { transform: translate(0, 0); opacity: 0; }
+  0.6% { opacity: 0.65; }
+  5.2% { opacity: 0.6; }
+  6% { transform: translate(230px, 115px); opacity: 0; }
+  100% { transform: translate(230px, 115px); opacity: 0; }
+}
 .hero__copy { flex: 1 1 34ch; }
 .hero__title { font-size: clamp(2.1rem, 6.5vw, 4.6rem); max-width: 18ch; }
 .hero__sub { max-width: 52ch; font-size: 1.06rem; color: #C7D6D0; margin-bottom: 2rem; }
@@ -371,6 +385,7 @@ html.motion-off .sounding--animate .sounding__macd,
 html.motion-off .sounding--animate .sounding__macdline,
 html.motion-off .globe__spin,
 html.motion-off .stars__layer,
+html.motion-off .shoot,
 html.motion-off .ticker__track { animation: none; }
 html.motion-off .ticker { overflow-x: auto; }
 

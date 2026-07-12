@@ -106,11 +106,30 @@ function starfieldSVG({ seed = "liquidsea-stars", count = 66, width = 1440, heig
     const o = (0.18 + rng() * 0.5).toFixed(2);
     layers[i % 3].push(`<rect x="${x}" y="${y}" width="${s}" height="${s}" fill="${color}" opacity="${o}"/>`);
   }
+  // Distant shooting stars — small pixel streaks (head + fading tail) that
+  // dart diagonally on long staggered cycles, at most one visible at a time.
+  const shoots = [
+    { x: 150, y: 70, cls: "shoot--1" },
+    { x: 820, y: 45, cls: "shoot--2" },
+    { x: 440, y: 190, cls: "shoot--3" },
+  ]
+    .map(({ x, y, cls }) => {
+      const tail = [1, 2, 3, 4]
+        .map((i) => {
+          const s = (3 - i * 0.5).toFixed(1);
+          return `<rect x="${x - i * 5}" y="${y - i * 2.5}" width="${s}" height="${s}" fill="${PALETTE.foam}" opacity="${(0.7 - i * 0.15).toFixed(2)}"/>`;
+        })
+        .join("");
+      return `<g class="shoot ${cls}">${tail}<rect x="${x}" y="${y}" width="3" height="3" fill="${PALETTE.foam}"/></g>`;
+    })
+    .join("");
+
   return [
     `<svg class="stars" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">`,
     `<g class="stars__layer stars__layer--1">${layers[0].join("")}</g>`,
     `<g class="stars__layer stars__layer--2">${layers[1].join("")}</g>`,
     `<g class="stars__layer stars__layer--3">${layers[2].join("")}</g>`,
+    shoots,
     `</svg>`,
   ].join("");
 }
