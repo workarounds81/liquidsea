@@ -269,12 +269,17 @@ a:hover { color: var(--ink); }
 @keyframes starDrift { from { transform: translateX(-30px); } to { transform: translateX(30px); } }
 @keyframes starTwinkle { from { opacity: 0.5; } to { opacity: 1; } }
 
-/* Distant shooting stars — a ~1s streak per long cycle, staggered so they
-   feel rare. Base state is invisible: decor that only exists in motion. */
+/* Distant shooting stars — a ~1s streak per cycle. Six on independent
+   staggered timings, close enough together that two or three can be
+   mid-streak at once. Base state is invisible: decor that only exists
+   in motion. */
 .shoot { opacity: 0; }
-.stars .shoot { animation: shootAcross 17s linear 4s infinite; }
-.stars .shoot--2 { animation-duration: 23s; animation-delay: 9s; }
-.stars .shoot--3 { animation-duration: 29s; animation-delay: 15s; }
+.stars .shoot { animation: shootAcross 13s linear 2s infinite; }
+.stars .shoot--2 { animation-duration: 15s; animation-delay: 3.5s; }
+.stars .shoot--3 { animation-duration: 17s; animation-delay: 2.8s; }
+.stars .shoot--4 { animation-duration: 19s; animation-delay: 4.6s; }
+.stars .shoot--5 { animation-duration: 16s; animation-delay: 6s; }
+.stars .shoot--6 { animation-duration: 21s; animation-delay: 3s; }
 @keyframes shootAcross {
   0% { transform: translate(0, 0); opacity: 0; }
   0.6% { opacity: 0.65; }

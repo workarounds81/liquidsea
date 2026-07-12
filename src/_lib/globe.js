@@ -107,11 +107,14 @@ function starfieldSVG({ seed = "liquidsea-stars", count = 66, width = 1440, heig
     layers[i % 3].push(`<rect x="${x}" y="${y}" width="${s}" height="${s}" fill="${color}" opacity="${o}"/>`);
   }
   // Distant shooting stars — small pixel streaks (head + fading tail) that
-  // dart diagonally on long staggered cycles, at most one visible at a time.
+  // dart diagonally on staggered cycles; several can be mid-streak together.
   const shoots = [
     { x: 150, y: 70, cls: "shoot--1" },
     { x: 820, y: 45, cls: "shoot--2" },
     { x: 440, y: 190, cls: "shoot--3" },
+    { x: 1120, y: 130, cls: "shoot--4" },
+    { x: 280, y: 260, cls: "shoot--5" },
+    { x: 980, y: 300, cls: "shoot--6" },
   ]
     .map(({ x, y, cls }) => {
       const tail = [1, 2, 3, 4]
